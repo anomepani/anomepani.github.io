@@ -1,5 +1,5 @@
 # Sharepoint 2013/2016/2019/Online, Office 365 REST API Code Sample/Example
-In this repo contains Sharepoint 2013/2016/2019/Online, Office 365 REST API Code Sample/Example which will using SP Rest utility `SPRest.ts` or `SPRest.js`
+In example contains Utility from [sp-rest-util](https://github.com/anomepani/sp-rest-util) for Sharepoint 2013/2016/2019/Online, Office 365 REST API Code Sample/Example which will using SP Rest utility [`SPRest.ts`](https://github.com/anomepani/sp-rest-util/blob/master/SpRest.ts) or [`SPRest.js`](https://github.com/anomepani/sp-rest-util/blob/master/SpRest.ts)
 Here utility library can be used with TypeScript in #Spfx and also work with most browsers.
 
 As I have used `fetch` API which is not available in IE11 browser so you can use [polyfill](https://github.com/github/fetch)
