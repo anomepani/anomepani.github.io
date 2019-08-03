@@ -62,7 +62,7 @@ console.log(r);
 
 Reference link : https://www.c-sharpcorner.com/article/easy-sharepoint-listitem-crud-operation-using-rest-api-wrapper/
 
-## Utility method for getting RequestDigest for POST Request
+## Create SharePoint RequestDigest Utility method for reusability in Code
 
 ```js
 var getRequestDigest=(rootUrl)=>{
@@ -76,7 +76,7 @@ return fetch(rootUrl+"/_api/contextinfo",_payloadOptions).then(r=>r.json())
 }
 ```
 
-## Upload or Create txt file in SharePoint Document Library
+## Upload file or Create Text file in SharePoint 2013, Online Document Library Using REST API Call
 
 ```js
 //Get Digest first then create txt file
@@ -91,7 +91,7 @@ fetch(reqUrl+"/Files/add(url='file_name.txt',overwrite=true)",
 })
 ```
 
-## Update A SharePoint List Item Without Increasing Its Item File Version Using Rest API
+## Update A SharePoint List Item Without Increasing Its Item File Version Using SharePoint REST API
 
 
 ```js
@@ -128,8 +128,7 @@ _payloadOptions).then(r=>r.json()).then(r=>console.log(r))
 Reference link : 
 https://www.c-sharpcorner.com/article/update-a-sharepoint-list-item-without-increasing-its-item-file-version-using-res/
 
-## Make Batch Request call in SharePoint Online using BatchUtils for all Get Operation
-
+## SharePoint Online Batch REST API example using Batch Utils with Multiple Http Get Request in Single Batch Call
 BatchUtils can be found in [Here](https://github.com/anomepani/sp-rest-util/blob/master/BatchUtils.ts)
 
 Here rootUrl required to Generate Request Digest Token as batch Request is POST request.
@@ -158,7 +157,7 @@ batchUrls:arr,FormDigestValue: r.d.GetContextWebInformation.FormDigestValue}).th
 
 ```
 
-## SharePoint Batch API for POST ADD/UPDATE/DELETE List Item 
+## SharePoint Online Batch REST API example using Batch Utils with Multiple Http POST, PATCH, DELETE Request in Single Batch Call
 
 SharePoint Batch API is very powerful and useful for making multiple request to single request.
 This BatchUtils Support ADD/UPDATE/DELETE Operation, it can be combined in single batch Requests.
