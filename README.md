@@ -4,7 +4,7 @@ Here utility library can be used with TypeScript in #Spfx and also work with mos
 
 As I have used `fetch` API which is not available in IE11 browser so you can use [polyfill](https://github.com/github/fetch)
 
-## Sharepoint 2013/2016/2019/Online List Item CRUD Operation
+## Sharepoint 2013, 2016, 2019, Online, List, ListItem CRUD Operation Example code
 
 ```js
 var util=new SPRest("https://brgrp.sharepoint.com");
