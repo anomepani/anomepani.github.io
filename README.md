@@ -246,4 +246,47 @@ fetch("https://brgrp.sharepoint.com/_api/sitepages/communicationsite/create",{
 
 ## As we have created Communication sites using REST API In SharePoint Online, We can create Modern Site In SharePoint Online using REST API.
 
+To specify which type of site to create you use the WebTemplate attribute. Use one of the following templates to select which type of site to create:
+
+* Communication Site: SITEPAGEPUBLISHING#0
+* non-group associated Team Site: STS#3
+
+Reference Link : https://docs.microsoft.com/en-us/sharepoint/dev/apis/site-creation-rest
+
+Endpoint Url: https://brgrp.sharepoint.com/_api/SPSiteManager/Create
+
+Method: POST
+
+```js
+//Paylaod for Creating modern site using SPSiteManager REST API
+var body={
+   "request":{"Title":"Contoso",
+ "Lcid":1033,"ShareByEmailEnabled":false
+ ,"Url":"https://brgrp.sharepoint.com/sites/mdrnsite"
+ ,"Classification":""
+ ,"Description":""
+ ,"WebTemplate":"SITEPAGEPUBLISHING#0"
+ ,"WebTemplateExtensionId":"00000000-0000-0000-0000-000000000000"
+ ,"HubSiteId":"00000000-0000-0000-0000-000000000000"
+ ,"Owner":null}};
+ 
+ 	fetch("https://brgrp.sharepoint.com/_api/contextinfo",{ method: "POST", headers:{
+        "accept":"application/json;odata=verbose",
+        "content-type":"application/json;odata=verbose",
+        
+    }}).then(r=>r.json())
+	.then(r=>
+									   {
+// Create Modern Site using REST API without passing metadata
+fetch("https://brgrp.sharepoint.com/_api/SPSiteManager/Create",{
+    method: "POST",
+    body: JSON.stringify(body),
+    headers:{
+        "accept":"application/json;odata=verbose",
+        "content-type":"application/json;odata=verbose",
+        "X-RequestDigest": r.d.GetContextWebInformation.FormDigestValue
+    }}).then(r=>r.text()).then(r=>console.log(r))
+    }); 
+ ```
+
 
