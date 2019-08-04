@@ -193,3 +193,57 @@ batchUrls:arr,FormDigestValue: r.d.GetContextWebInformation.FormDigestValue}).th
 
 ```
 
+## Create a Communication Site In SharePoint Online Using REST API
+
+### Previously, In On Premise version of SharePoint it will take a lots of time to create sites or site collection. But Nowadays, On SharePoint Online it is very easy to create sites.
+
+In this example we will see sample code to create Communication Site in SharePoint Online using REST API.
+Endpoint Url: https://brgrp.sharepoint.com/_api/sitepages/communicationsite/create
+
+Method: POST
+Metadata: {"type":"SP.Publishing.CommunicationSiteCreationRequest"}
+
+```js
+//Payload for Creating Sites using REST API
+var body={
+    "request":{
+        "__metadata":{"type":"SP.Publishing.CommunicationSiteCreationRequest"},
+        "AllowFileSharingForGuestUsers":false,
+        "Classification":"IT",
+        "Description":"Here is my communication site",
+        // "SiteDesignId" - use either of the below 3 options
+        //"SiteDesignId":"f6cc5403-0d63-442e-96c0-285923709ffc",
+        //"SiteDesignId":null,
+        "SiteDesignId":"6142d2a0-63a5-4ba0-aede-d9fefca2c767",
+        "Title":"My Test Communication Site",
+        "Url":"https://brgrp.sharepoint.com/sites/testcommunicationsite",            
+        "lcid":1033
+    }
+};
+
+// Separate Request for getting RequestDigest for POST Request 
+ 	fetch("https://brgrp.sharepoint.com/_api/contextinfo",{ method: "POST", headers:{
+        "accept":"application/json;odata=verbose",
+        "content-type":"application/json;odata=verbose",
+        
+    }}).then(r=>r.json())
+	.then(r=>
+									   {
+
+fetch("https://brgrp.sharepoint.com/_api/sitepages/communicationsite/create",{
+    method: "POST",
+    body: JSON.stringify(body),
+    headers:{
+        "accept":"application/json;odata=verbose",
+        "content-type":"application/json;odata=verbose",
+        "X-RequestDigest": r.d.GetContextWebInformation.FormDigestValue
+    }}).then(r=>r.text()).then(r=>console.log(r))
+    }); 
+
+```
+
+## Create a Modern Site In SharePoint Online Using REST API
+
+## As we have created Communication sites using REST API In SharePoint Online, We can create Modern Site In SharePoint Online using REST API.
+
+
