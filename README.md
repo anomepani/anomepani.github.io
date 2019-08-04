@@ -90,7 +90,72 @@ fetch(reqUrl+"/Files/add(url='file_name.txt',overwrite=true)",
 ,body:"Content Of Text File"}).then(r=>console.log(r))
 })
 ```
+## Read any file from SharePoint Online Document Library Using REST API Call
 
+In this example I have tried to Read Excel File from SharePoint Online document library using REST API
+
+```js
+ 
+        fetch("https://brgrp.sharepoint.com/sites/WMAMaster/_api/Web/GetFileByServerRelativePath(decodedurl='/sites/WMAMaster/Shared Documents/Book.xlsx')/$value", {
+            headers: {
+                "accept": "application/json;odata=verbose"
+            }
+        }).then(r => r.blob()).then(r => 
+{
+console.log("BLOB RESULT");
+console.log(r);
+            //Commented Converting  Of Blob to array buffer
+            new Response(r).arrayBuffer().then(r=>{
+console.log("ARRAY BUFFER RESULT");
+console.log(r);
+});
+        });
+```
+
+## Read file and make Copy of file from SharePoint Online Document Library Using REST API Call
+
+In This example I have tried to read excel file from one of the sharepoint online document library and create copy of excel file in library
+
+```js
+
+//Generate Request Digest for Creating excel file in SharePoint Online Document Library
+fetch("https://brgrp.sharepoint.com/sites/WMAMaster/_api/contextinfo", {
+        method: "POST",
+        headers: {
+            "accept": "application/json;odata=verbose",
+            "content-type": "application/json;odata=verbose",
+
+        }
+    }).then(r => r.json())
+    .then(rd => {
+
+        //Read Excel File from SharePoint
+        fetch("https://brgrp.sharepoint.com/sites/WMAMaster/_api/Web/GetFileByServerRelativePath(decodedurl='/sites/WMAMaster/Shared Documents/Book.xlsx')/$value", {
+            headers: {
+                "accept": "application/json;odata=verbose"
+            }
+        }).then(r => r.blob()).then(r => {
+            //Commented Converting  Of Blob to array buffer
+            //new Response(r).arrayBuffer().then(r=>{
+            //here "rd" is response from RequestDigest Request
+            //here "r" is response from Reading Excel file from SharePoint in ArrayBuffer
+            // Copy Excel file from SharePoint and Save it to Library
+
+            fetch("https://brgrp.sharepoint.com/sites/WMAMaster/_api/web/GetFolderByServerRelativeUrl('/sites/WMAMaster/Shared Documents')/Files/add(url='copyexcel.xlsx',overwrite=true)", {
+                method: "POST",
+                headers: {
+                    accept: "application/json;odata=verbose",
+                    "Content-Type": "application/json;odata=verbose",
+                    "X-RequestDigest": rd.d.GetContextWebInformation.FormDigestValue
+                },
+                body: r
+            }).then(r => console.log(r));
+            //Commented Converting  Of Blob to array buffer
+            //});
+
+        });
+    });
+```
 ## Update A SharePoint List Item Without Increasing Its Item File Version Using SharePoint REST API
 
 
