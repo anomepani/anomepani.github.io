@@ -1,8 +1,99 @@
-# Sharepoint 2013/2016/2019/Online, Office 365 REST API Code Sample/Example
+# Sharepoint 2013,2019,Online,REST API Code Sample|Example
 In example contains Utility from [sp-rest-util](https://github.com/anomepani/sp-rest-util) for Sharepoint 2013/2016/2019/Online, Office 365 REST API Code Sample/Example which will using SP Rest utility [`SPRest.ts`](https://github.com/anomepani/sp-rest-util/blob/master/SpRest.ts) or [`SPRest.js`](https://github.com/anomepani/sp-rest-util/blob/master/SpRest.ts)
 Here utility library can be used with TypeScript in #Spfx and also work with most browsers.
 
 As I have used `fetch` API which is not available in IE11 browser so you can use [polyfill](https://github.com/github/fetch)
+
+##  SPOHelper - Light Weight CRUD Operation REST Utility For SharePoint Online in SPFX Framework
+### Posted Date : 12-Jan-2019
+On Daily basis if we have to make REST API Request in Sharepoint Online Most of developer will be using `fetch` or `$.ajax`.
+To use `$.ajax` it requires external depenedency `jQuery`, and `fetch` API Available in Modern Browsers and polyfill available as well.
+
+However even if we are making Sharepoint REST API (CRUD) Request using `fetch` or `$.ajax` every time we need to setup Headers, 
+Content Type, Credentials  and RequestDigest Headers and json data conversion for response.
+
+To Remove this type of duplicate configuration and repetetive boilerplate code,  I have created [`SPOHelper.ts`](https://github.com/anomepani/sp-rest-util/blob/master/SPOHelper.ts) for faster SPFX Development.
+
+### How to Use SPOHelper for Making Sharepoint REST API CRUD Operation with few lines of code.
+
+If you are developing with Typescript first you need to import requried methods 
+
+```js
+import {SPGeT, SPDelete, SPPost, SPUpdate} from "./SPOHelper";
+```
+
+`SPGet` and `SPDelete` method accepts single parameter `url`
+
+`SPPost(options)`, `SPUpdate(options)` method accepts single JSON object as parameter which have multiple json property.
+`options.url` which is url required
+`options.payload` is json object which have all required data for inserting `List` or `ListItem` without `metadata`.
+
+In this `SPOHelper.ts` I have used `Accept` and `Content-Type` headers value `"application/json; odata=nometadata"` which doesn't 
+require metadata while CRUD Operation and response payload is also minimal. You can explore [json-light-support-rest-sharepoint-api](https://www.microsoft.com/en-us/microsoft-365/blog/2014/08/13/json-light-support-rest-sharepoint-api-released/)
+
+`SPPost(options)` This method used for Createing `List` or `List Item in SharePoint Online.
+`SPUpdate(options)` This method used for Updating `List` or `List Item in SharePoint Online.
+
+#### SPO GET Request Usage Example
+
+```js
+//Get List By Title
+SPGet("https://tenant.sharepoint.com/sites/ABCSite/_api/Lists/getbytitle('SPO List')")
+.then(r=>console.log(r));
+
+//Get All ListItem
+SPGet("https://tenant.sharepoint.com/sites/ABCSite/_api/Lists/getbytitle('SPO List')/items")
+.then(r=>console.log(r));
+```
+
+#### SPO Delete Request Usage Example
+
+```js
+//Delete Sharepoint List 
+SPDelete("https://tenant.sharepoint.com/sites/ABCSite/_api/Lists/getbytitle('SPO List')")
+.then(r=>console.log(r));
+
+//Delete Sharepoint Listitem
+SPDelete("https://tenant.sharepoint.com/sites/ABCSite/_api/Lists/getbytitle('SPO List')/items(1)")
+.then(r=>console.log(r));
+```
+
+#### SPO Post Request Usage Example
+
+```js
+ //Create SharePoint List without passing metadata
+ SPPost({url:"https://tenant.sharepoint.com/sites/ABCSite/_api/Lists"
+ ,payload:{Title :"POC Doc"
+ , BaseTemplate: 101
+ ,Description: 'Created From SPOHelper' }
+ })
+ .then(r=>console.log(r));
+ 
+ //Create SharePoint ListItem without passing metadata
+ SPPost({url:"https://tenant.sharepoint.com/sites/ABCSite/_api/Lists/getbytitle('SPO List')/items"
+ ,payload:{Title :"POST test",
+ Number:123}
+ })
+ .then(r=>console.log(r));
+ 
+```
+
+#### SPO Update Request Usage Example
+
+```js
+ //Update SharePoint List without passing metadata
+ SPUpdate({url:"https://tenant.sharepoint.com/sites/ABCSite/_api/Lists/GetByTitle('POC Doc')"
+ ,payload:{Description: 'Updated Description From SPOHelper' }
+ }).then(r=>console.log(r));
+ 
+ //Update SharePoint ListItem without passing metadata
+ SPUpdate({url:"https://tenant.sharepoint.com/sites/ABCSite/_api/Lists/getbytitle('SPO List')/items(1)"
+ ,payload:{Title :"Uodate  test",
+ Number:1234}
+ }).then(r=>console.log(r))
+ 
+```
+##### Fill free to create [isssue](https://github.com/anomepani/sp-rest-util/issues) and reach out to me at [arvindmepani@gmail.com](arvindmepani@gmail.com)
 
 ## Sharepoint 2013, 2016, 2019, Online, List, ListItem CRUD Operation Example code
 
@@ -354,4 +445,6 @@ fetch("https://brgrp.sharepoint.com/_api/SPSiteManager/Create",{
     }); 
  ```
 
-
+### Changlog
+12-Jan-2020 - Created general purpose another SPO Helper Utility library to make GET, POST, UPDATE and DELETE Operation in Sharepoint Online REST API Easily. 
+Year 2019 - Created SharePoint Online REST and Batch Utility to reduce daily basis repetetive code and hosted website using GitHub Pages
