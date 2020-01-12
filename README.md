@@ -5,7 +5,7 @@ Here utility library can be used with TypeScript in #Spfx and also work with mos
 As I have used `fetch` API which is not available in IE11 browser so you can use [polyfill](https://github.com/github/fetch)
 
 ##  SPOHelper - Light Weight CRUD Operation REST Utility For SharePoint Online in SPFX Framework
-### Posted Date : 12-Jan-2019
+### Posted Date : 12-Jan-2020
 On Daily basis if we have to make REST API Request in Sharepoint Online Most of developer will be using `fetch` or `$.ajax`.
 To use `$.ajax` it requires external depenedency `jQuery`, and `fetch` API Available in Modern Browsers and polyfill available as well.
 
