@@ -446,5 +446,6 @@ fetch("https://brgrp.sharepoint.com/_api/SPSiteManager/Create",{
  ```
 
 ### Changlog
-12-Jan-2020 - Created general purpose another SPO Helper Utility library to make GET, POST, UPDATE and DELETE Operation in Sharepoint Online REST API Easily. 
+12-Jan-2020 - Created general purpose another SPO Helper Utility library to make GET, POST, UPDATE and DELETE Operation in Sharepoint Online REST API Easily.
+
 Year 2019 - Created SharePoint Online REST and Batch Utility to reduce daily basis repetetive code and hosted website using GitHub Pages
