@@ -1,11 +1,38 @@
-# Sharepoint 2013,2019,Online,REST API Code Sample|Example
+# Sharepoint 2013,2019,Online,REST API, Batch API Code Sample| Example |SPFX
 In example contains Utility from [sp-rest-util](https://github.com/anomepani/sp-rest-util) for Sharepoint 2013/2016/2019/Online, Office 365 REST API Code Sample/Example which will using SP Rest utility [`SPRest.ts`](https://github.com/anomepani/sp-rest-util/blob/master/SpRest.ts) or [`SPRest.js`](https://github.com/anomepani/sp-rest-util/blob/master/SpRest.ts)
 Here utility library can be used with TypeScript in #Spfx and also work with most browsers.
 
 As I have used `fetch` API which is not available in IE11 browser so you can use [polyfill](https://github.com/github/fetch)
 
+##  Easily Add attachment or upload file to Sharepoint List using REST API with SPOHelper utils on SharePoint Online, 2016, 2019
+### Posted Date : "2020-01-26T08:48:00.909Z"
+
+If you are developing with Typescript first you need to import requried methods 
+
+```js
+import {SPPost, SPFileUpload} from "./SPOHelper";
+```
+Using SPOhelper `SPPost` method, You can Upload only text file to Sharepoint List as per below code.
+We are passing Url and payload for text file as plain text value.
+
+```js
+SPPost({url:"https://tenant.sharepoint.com/_api/Lists/GetByTitle('SPOList')/items(1)//AttachmentFiles/ add(FileName='abc4.txt') ",payload:"This is text")}).then(r=>console.log(r))
+```
+As we know most of case we are uploading PPT, Excel, PDF and Word File which are not Plain Text File.
+To upload this types of files we need to pass payload as `Blob` type or `ArrayBuffer` which are binary format.
+I have created `SPFileUpload` wrapper method to upload file to sharepoint with minimal efforts.
+
+```js
+var reqUrl="https://tenant.sharepoint.com/_api/Lists/GetByTitle('SPOList')/items(1)/AttachmentFiles/add(FileName='abc3.txt')"
+SPFileUpload({
+url:reqUrl
+,payload:new Blob(["This is text"],{type:"text/plain"})
+}).then(r=>console.log(r))
+```
+As per above sample example you have to pass url where you have to upload file and in payload pass arraybuffer or blob type value of file.
+
 ##  SPOHelper - Light Weight CRUD Operation REST Utility For SharePoint Online in SPFX Framework
-### Posted Date : 12-Jan-2020
+### Posted Date : "2020-01-12T08:48:00.909Z"
 On Daily basis if we have to make REST API Request in Sharepoint Online Most of developer will be using `fetch` or `$.ajax`.
 To use `$.ajax` it requires external depenedency `jQuery`, and `fetch` API Available in Modern Browsers and polyfill available as well.
 
@@ -19,7 +46,7 @@ To Remove this type of duplicate configuration and repetetive boilerplate code, 
 If you are developing with Typescript first you need to import requried methods 
 
 ```js
-import {SPGeT, SPDelete, SPPost, SPUpdate} from "./SPOHelper";
+import {SPGet, SPDelete, SPPost, SPUpdate} from "./SPOHelper";
 ```
 
 `SPGet` and `SPDelete` method accepts single parameter `url`
@@ -97,6 +124,8 @@ SPDelete("https://tenant.sharepoint.com/sites/ABCSite/_api/Lists/getbytitle('SPO
 
 ## Sharepoint 2013, 2016, 2019, Online, List, ListItem CRUD Operation Example code
 
+### Note- Suggesting to use `SPOHelper` utils for CRUD Operaton using Sharepoint  REST instead of `SPRest`
+
 ```js
 var util=new SPRest("https://brgrp.sharepoint.com");
 
@@ -153,7 +182,7 @@ console.log(r);
 
 Reference link : https://www.c-sharpcorner.com/article/easy-sharepoint-listitem-crud-operation-using-rest-api-wrapper/
 
-## Create SharePoint RequestDigest Utility method for reusability in Code
+## Get or Generate RequestDigest in SharePoint 2013, 2016, 2019 , Online using REST API
 
 ```js
 var getRequestDigest=(rootUrl)=>{
@@ -167,7 +196,9 @@ return fetch(rootUrl+"/_api/contextinfo",_payloadOptions).then(r=>r.json())
 }
 ```
 
-## Upload file or Create Text file in SharePoint 2013, Online Document Library Using REST API Call
+
+
+## Upload file or Attachment to in SharePoint 2013, 2016,2019 Online Custom List or Document Library Using REST API
 
 ```js
 //Get Digest first then create txt file
@@ -181,7 +212,7 @@ fetch(reqUrl+"/Files/add(url='file_name.txt',overwrite=true)",
 ,body:"Content Of Text File"}).then(r=>console.log(r))
 })
 ```
-## Read any file from SharePoint Online Document Library Using REST API Call
+## Read file or attachment from SharePoint Document Library Using REST API | Sharepoint Onine, 2013, 2016, 2019
 
 In this example I have tried to Read Excel File from SharePoint Online document library using REST API
 
@@ -203,7 +234,7 @@ console.log(r);
         });
 ```
 
-## Read file and make Copy of file from SharePoint Online Document Library Using REST API Call
+## Copy file or attachement from SharePoint List | Document Library Using REST API | SharePoint Online, 2013, 2016, 2019 
 
 In This example I have tried to read excel file from one of the sharepoint online document library and create copy of excel file in library
 
@@ -247,7 +278,7 @@ fetch("https://brgrp.sharepoint.com/sites/WMAMaster/_api/contextinfo", {
         });
     });
 ```
-## Update A SharePoint List Item Without Increasing Its Item File Version Using SharePoint REST API
+## Using SystemUpdate, Update SharePoint List Item Without Increasing Its Item File Version Using SharePoint REST API | SharePoint Online, 2013, 2016, 2019
 
 
 ```js
@@ -284,7 +315,7 @@ _payloadOptions).then(r=>r.json()).then(r=>console.log(r))
 Reference link : 
 https://www.c-sharpcorner.com/article/update-a-sharepoint-list-item-without-increasing-its-item-file-version-using-res/
 
-## SharePoint Online Batch REST API example using Batch Utils with Multiple Http Get Request in Single Batch Call
+## SharePoint Online, 2016, 2019 Batch Request REST API example using Batch Utils with 100 request in Single Batch call
 BatchUtils can be found in [Here](https://github.com/anomepani/sp-rest-util/blob/master/BatchUtils.ts)
 
 Here rootUrl required to Generate Request Digest Token as batch Request is POST request.
@@ -313,7 +344,7 @@ batchUrls:arr,FormDigestValue: r.d.GetContextWebInformation.FormDigestValue}).th
 
 ```
 
-## SharePoint Online Batch REST API example using Batch Utils with Multiple Http POST, PATCH, DELETE Request in Single Batch Call
+##  SharePoint Online, 2016, 2019 Batch REST API example using Batch Utils with Multiple Http POST, PATCH, DELETE Request in Single Batch Call
 
 SharePoint Batch API is very powerful and useful for making multiple request to single request.
 This BatchUtils Support ADD/UPDATE/DELETE Operation, it can be combined in single batch Requests.
@@ -349,7 +380,7 @@ batchUrls:arr,FormDigestValue: r.d.GetContextWebInformation.FormDigestValue}).th
 
 ```
 
-## Create a Communication Site In SharePoint Online Using REST API
+## Create a Communication Site In SharePoint 2019, Online Using REST API
 
 ### Previously, In On Premise version of SharePoint it will take a lots of time to create sites or site collection. But Nowadays, On SharePoint Online it is very easy to create sites.
 
@@ -398,7 +429,7 @@ fetch("https://brgrp.sharepoint.com/_api/sitepages/communicationsite/create",{
 
 ```
 
-## Create a Modern Site In SharePoint Online Using REST API
+## Create a Modern Site In SharePoint Online,2019 Using REST API
 
 ## As we have created Communication sites using REST API In SharePoint Online, We can create Modern Site In SharePoint Online using REST API.
 
@@ -445,7 +476,9 @@ fetch("https://brgrp.sharepoint.com/_api/SPSiteManager/Create",{
     }); 
  ```
 
-### Changlog
+### Changelog
+Year 2019 - Created SharePoint Online REST and Batch Utility to reduce daily basis repetetive code and hosted website using GitHub Pages
+
 12-Jan-2020 - Created general purpose another SPO Helper Utility library to make GET, POST, UPDATE and DELETE Operation in Sharepoint Online REST API Easily.
 
-Year 2019 - Created SharePoint Online REST and Batch Utility to reduce daily basis repetetive code and hosted website using GitHub Pages
+26-Jan-2020 - Updated heading and content, Fixed type mistake.
