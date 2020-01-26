@@ -16,7 +16,11 @@ Using SPOhelper `SPPost` method, You can Upload only text file to Sharepoint Lis
 We are passing Url and payload for text file as plain text value.
 
 ```js
-SPPost({url:"https://tenant.sharepoint.com/_api/Lists/GetByTitle('SPOList')/items(1)//AttachmentFiles/ add(FileName='abc4.txt') ",payload:"This is text")}).then(r=>console.log(r))
+var reqUrl="https://tenant.sharepoint.com/_api/Lists/GetByTitle('SPOList')/items(1)/AttachmentFiles/add(FileName='abc3.txt')";
+SPPost({
+url:reqUrl
+,payload:"This is text")
+}).then(r=>console.log(r))
 ```
 As we know most of case we are uploading PPT, Excel, PDF and Word File which are not Plain Text File.
 To upload this types of files we need to pass payload as `Blob` type or `ArrayBuffer` which are binary format.
