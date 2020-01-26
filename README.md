@@ -124,7 +124,7 @@ SPDelete("https://tenant.sharepoint.com/sites/ABCSite/_api/Lists/getbytitle('SPO
  }).then(r=>console.log(r))
  
 ```
-##### Fill free to create [isssue](https://github.com/anomepani/sp-rest-util/issues) and reach out to me at [arvindmepani@gmail.com](arvindmepani@gmail.com)
+##### Fill free to create [isssue](https://github.com/anomepani/sp-rest-util/issues) and reach out to me at [arvindmepani@gmail.com](mailto:arvindmepani@gmail.com)
 
 ## Sharepoint 2013, 2016, 2019, Online, List, ListItem CRUD Operation Example code
 
