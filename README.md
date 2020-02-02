@@ -6,6 +6,47 @@ Here utility library can be used with TypeScript in #Spfx and also work with mos
 
 As I have used `fetch` API which is not available in IE11 browser so you can use [polyfill](https://github.com/github/fetch)
 
+## How to Upload multiple attachments in sharepoint list using REST API On SharePoint Online, SharePoint 2016, SharePoint 2019
+
+Uploading single/multiple files or attachments to Sharepoint list is most used functionality. However uploading single attachment is easy you can use  `SPFileUpload` method, usage of this method already explained in previous article.
+
+While uploading multiple attachments in sharepoint listitem you might have faced `Http Status Code 409 - Conflict Occurs`.
+
+For Multiple File upload to List We need to process file uploading one by one programatically to avoid `409 Conflict issue`.
+
+I have created `SPMultiFileUpload` helper method to upload multiple file in [`SPOHelper.ts`](https://github.com/anomepani/sp-rest-util/blob/master/SPOHelper.ts), which internally process one by one file uploading process at a time in loop and returns result once all file are uploaded. 
+
+Here is signature of method `SPMultiFileUpload({url :"baseReqUrl",files:[{fileName:"filename",data :Blobdata}]})`.
+
+`SPMultiFileUpload` accepts baseRequestUrl like `https://tenant.sharepoint.com/_api/Lists/GetByTitle('SPOList')/items(4)/AttachmentFiles/` in which List and Listitem Id already is set,
+`files` accept array of files json object with `fileName` and `data` field.
+
+To upload files we need to pass `data` field as `Blob` type or `ArrayBuffer` which are binary format.
+
+Let's see Below code snippet.
+
+```js
+import {SPMultiFileUpload} from "./SPOHelper";
+
+var baseReqUrl ="https://tenant.sharepoint.com/_api/Lists/GetByTitle('SPOList')/items(4)/AttachmentFiles/";
+//Here for testing purpose I have generated blob type object for text file , but you can prepare this array of files using file upload control
+
+var files =[
+{fileName: "1580650023814.txt", data: new Blob["Hello 1"]},
+{fileName: "2580650023814.txt", data: new Blob["Hello 2"]},
+{fileName: "3580650023814.txt", data: new Blob["Hello 3"]},
+{fileName: "4580650023814.txt", data: new Blob["Hello 4"]}
+];
+
+//Alternatively to test multiple file upload functionality you can use below method `GenerateSampleFileArray(10)` to prepare  files array by passing number of files count as argument.
+var files=GenerateSampleFileArray(4);
+
+//Pass required paramters and Call method to upload files.
+SPMultiFileUpload({url:baseReqUrl,files:files}).then(r=>console.log("All File Uploaded..",r));
+
+```
+Once all files are uploaded you will receive message in console log.
+
 ## How to update created by and modified by field in sharepoint List using REST API
 ## How to update Author and Editor field in sharepoint list using REST API
 
@@ -534,3 +575,5 @@ Year 2019 - Created SharePoint Online REST and Batch Utility to reduce daily bas
 12-Jan-2020 - Created general purpose another SPO Helper Utility library to make GET, POST, UPDATE and DELETE Operation in Sharepoint Online REST API Easily.
 
 26-Jan-2020 - Updated heading and content, Fixed type mistake.
+
+02-Feb-2020 - Added Usage of `SPMultiFileUpload` method and updating Author and Editor field
