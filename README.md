@@ -2,12 +2,14 @@
 In example contains Utility from [sp-rest-util](https://github.com/anomepani/sp-rest-util) for Sharepoint 2013/2016/2019/Online, Office 365 REST API Code Sample/Example which will using SP Rest utility [`SPRest.ts`](https://github.com/anomepani/sp-rest-util/blob/master/SpRest.ts) or [`SPRest.js`](https://github.com/anomepani/sp-rest-util/blob/master/SpRest.ts)
 Here utility library can be used with TypeScript in #Spfx and also work with most browsers.
 
+[`SPOHelper.ts`](https://github.com/anomepani/sp-rest-util/blob/master/SPOHelper.ts) is very useful and easy to use for Sharepoint Online, Sharepoint 2016, Sharepoint 2019 REST API Operation with minimal code.
+
 As I have used `fetch` API which is not available in IE11 browser so you can use [polyfill](https://github.com/github/fetch)
 
 ##  Easily Add attachment or upload file to Sharepoint List using REST API with SPOHelper utils on SharePoint Online, 2016, 2019
 ### Posted Date : "2020-01-26T08:48:00.909Z"
 
-If you are developing with Typescript first you need to import requried methods 
+If you are developing with Typescript first you need to import requried methods from [`SPOHelper.ts`](https://github.com/anomepani/sp-rest-util/blob/master/SPOHelper.ts)
 
 ```js
 import {SPPost, SPFileUpload} from "./SPOHelper";
