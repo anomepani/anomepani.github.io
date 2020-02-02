@@ -6,7 +6,7 @@ Here utility library can be used with TypeScript in #Spfx and also work with mos
 
 As I have used `fetch` API which is not available in IE11 browser so you can use [polyfill](https://github.com/github/fetch)
 
-##  Easily Add attachment or upload file to Sharepoint List using REST API with SPOHelper utils on SharePoint Online, 2016, 2019
+##  How to Add attachment or upload file to Sharepoint List or Document Library using REST API on SharePoint Online, 2016, 2019
 ### Posted Date : "2020-01-26T08:48:00.909Z"
 
 If you are developing with Typescript first you need to import requried methods from [`SPOHelper.ts`](https://github.com/anomepani/sp-rest-util/blob/master/SPOHelper.ts)
@@ -47,7 +47,7 @@ Content Type, Credentials  and RequestDigest Headers and json data conversion fo
 
 To Remove this type of duplicate configuration and repetetive boilerplate code,  I have created [`SPOHelper.ts`](https://github.com/anomepani/sp-rest-util/blob/master/SPOHelper.ts) for faster SPFX Development.
 
-### How to Use SPOHelper for Making Sharepoint REST API CRUD Operation with few lines of code.
+### How to Perform Sharepoint List | Library | all crud operations using REST API on Sharepoint Online, Sharepoint 2016, Sharepoint 2019.
 
 If you are developing with Typescript first you need to import requried methods 
 
@@ -67,7 +67,7 @@ require metadata while CRUD Operation and response payload is also minimal. You 
 `SPPost(options)` This method used for Createing `List` or `List Item in SharePoint Online.
 `SPUpdate(options)` This method used for Updating `List` or `List Item in SharePoint Online.
 
-#### SPO GET Request Usage Example
+#### Sharepoint Online GET REST API Request Usage Example using SPOHelper SPGet method | Sharepoint crud operations
 
 ```js
 //Get List By Title
@@ -79,7 +79,7 @@ SPGet("https://tenant.sharepoint.com/sites/ABCSite/_api/Lists/getbytitle('SPO Li
 .then(r=>console.log(r));
 ```
 
-#### SPO Delete Request Usage Example
+#### Sharepoint Online DELETE REST API Request Usage Example using SPOHelper SPDelete method | Sharepoint crud operations
 
 ```js
 //Delete Sharepoint List 
@@ -91,7 +91,7 @@ SPDelete("https://tenant.sharepoint.com/sites/ABCSite/_api/Lists/getbytitle('SPO
 .then(r=>console.log(r));
 ```
 
-#### SPO Post Request Usage Example
+#### Sharepoint Online POST REST API Request Usage Example using SPOHelper SPPost method | Sharepoint crud operations
 
 ```js
  //Create SharePoint List without passing metadata
@@ -111,7 +111,7 @@ SPDelete("https://tenant.sharepoint.com/sites/ABCSite/_api/Lists/getbytitle('SPO
  
 ```
 
-#### SPO Update Request Usage Example
+#### Sharepoint Online UPDAte REST API Request Usage Example using SPOHelper SPUpdate method | Sharepoint crud operations
 
 ```js
  //Update SharePoint List without passing metadata
@@ -128,7 +128,7 @@ SPDelete("https://tenant.sharepoint.com/sites/ABCSite/_api/Lists/getbytitle('SPO
 ```
 ##### Fill free to create [isssue](https://github.com/anomepani/sp-rest-util/issues) and reach out to me at [arvindmepani@gmail.com](mailto:arvindmepani@gmail.com)
 
-## Sharepoint 2013, 2016, 2019, Online, List, ListItem CRUD Operation Example code
+## Sharepoint 2013, 2016, 2019, Online, List, ListItem CRUD Operation Example code Using REST API
 
 ### Note- Suggesting to use `SPOHelper` utils for CRUD Operaton using Sharepoint  REST instead of `SPRest`
 
