@@ -6,6 +6,52 @@ Here utility library can be used with TypeScript in #Spfx and also work with mos
 
 As I have used `fetch` API which is not available in IE11 browser so you can use [polyfill](https://github.com/github/fetch)
 
+## How to update created by and modified by field in sharepoint List using REST API
+## How to update Author and Editor field in sharepoint list using REST API
+
+If you are performing  Automated tasks using MS Flow or Power Automate and Background job for uploading file or inserting new list item to Sharepoint List using Service Credentials or Sharepoint App Only Token On Behalf of Some User then Author and Editor Field (  also known as Created By and Modified Field) are set as Service Crednetial  or Sharepoint App Name.
+
+In this type of scenario Way to update Author and Editor field in Sharepoint List and Document Library is very important functionality.
+
+Luckily, I have found way to Update Created By and Modified By Field in SharePoint List using REST API on Sharepoint Online.
+
+I have used SPOHelper utility to Perform Sharepoint POST request with wrapped Request Digest.
+Make Sure to pass correct Paylaod as per Below Sample Code snippet.
+
+```js
+import {SPPost} from "./SPOHelper";
+
+// Prepare request Url to update Author or Editor field in SharePoint Using REST API as bellow
+var rootUrl="https://tenant.sharepoint.com";
+var reqUrl=rootUrl+"/_api/web/Lists/GetbyTitle('SPOList')/items(2)/ValidateUpdateListItem()";
+
+// Prepare payload to update Author or Editor field in SharePoint Using REST API as bellow
+
+var payload={"formValues":[
+{"FieldName":"Editor"
+,"FieldValue":"[{'Key':'i:0#.f|membership|normal@tenant.onmicrosoft.com'}]"
+},
+{"FieldName":"Author"
+,"FieldValue":"[{'Key':'i:0#.f|membership|normal@tenant.onmicrosoft.com'}]"}]
+};
+
+SPPost({url:reqUrl,payload:payload}).then(r=>console.log(r));
+
+```
+As per above code once Request Executed you will see response in console as below. In Response `ErrorMessage` and `HasException` value indicate weather our request executed successfully or not.
+
+```
+{"value":[
+{"ErrorMessage":null, "FieldName":"Editor",
+"FieldValue":"[{'Key':'i:0#.f|membership|normal@tenant.onmicrosoft.com'}]"
+,"HasException":false,"ItemId":2}
+,{"ErrorMessage":null,"FieldName":"Author",
+"FieldValue":"[{'Key':'i:0#.f|membership|normal@tenant.onmicrosoft.com'}]"
+,"HasException":false,"ItemId":2}]}
+```
+
+#### Hope, You find this article helpful for Updating Author and Editor Field in SharePoint  List.
+
 ##  How to Add attachment or upload file to Sharepoint List or Document Library using REST API on SharePoint Online, 2016, 2019
 ### Posted Date : "2020-01-26T08:48:00.909Z"
 
