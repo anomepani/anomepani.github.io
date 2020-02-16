@@ -1,579 +1,238 @@
-# Sharepoint 2013,2019,Online,REST API, Batch API Code Sample| Example |SPFX
-In example contains Utility from [sp-rest-util](https://github.com/anomepani/sp-rest-util) for Sharepoint 2013/2016/2019/Online, Office 365 REST API Code Sample/Example which will using SP Rest utility [`SPRest.ts`](https://github.com/anomepani/sp-rest-util/blob/master/SpRest.ts) or [`SPRest.js`](https://github.com/anomepani/sp-rest-util/blob/master/SpRest.ts)
-Here utility library can be used with TypeScript in #Spfx and also work with most browsers.
+# Jekyll Theme Chirpy
 
-[`SPOHelper.ts`](https://github.com/anomepani/sp-rest-util/blob/master/SPOHelper.ts) is very useful and easy to use for Sharepoint Online, Sharepoint 2016, Sharepoint 2019 REST API Operation with minimal code.
+[![Build Status](https://github.com/cotes2020/jekyll-theme-chirpy/workflows/build/badge.svg?event=push)](https://github.com/cotes2020/jekyll-theme-chirpy/actions?query=event%3Apush)
+[![GitHub license](https://img.shields.io/github/license/cotes2020/jekyll-theme-chirpy.svg)](https://github.com/cotes2020/jekyll-theme-chirpy/blob/master/LICENSE)
+[![996.icu](https://img.shields.io/badge/link-996.icu-%23FF4D5B.svg)](https://996.icu)
 
-As I have used `fetch` API which is not available in IE11 browser so you can use [polyfill](https://github.com/github/fetch)
+Language: English | [简体中文](docs/README_zh-CN.md)
 
-## How to Upload multiple attachments in sharepoint list using REST API On SharePoint Online, SharePoint 2016, SharePoint 2019
+A minimal, portfolio, sidebar, bootstrap Jekyll theme with responsive web design and focuses on text exhibition. It will help you easily record, manage and share your knowledge and experience. 
 
-Uploading single/multiple files or attachments to Sharepoint list is most used functionality. However uploading single attachment is easy you can use  `SPFileUpload` method, usage of this method already explained in previous article.
+You will get the following features:
 
-While uploading multiple attachments in sharepoint listitem you might have faced `Http Status Code 409 - Conflict Occurs`.
+* Auto Dark Mode
+* Posts' Last Modified Date
+* Table of Contents
+* Automatically Recommend Related Posts
+* Syntax highlighting
+* Two Level Categories
+* Search
+* Atom Feeds
+* Disqus Comments
+* Google Analytics
+* GA Pageviews (Advanced)
+* SEO Tag
+* Performance Optimization
 
-For Multiple File upload to List We need to process file uploading one by one programatically to avoid `409 Conflict issue`.
+[**Live Demo** »](https://chirpy.cotes.info)
 
-I have created `SPMultiFileUpload` helper method to upload multiple file in [`SPOHelper.ts`](https://github.com/anomepani/sp-rest-util/blob/master/SPOHelper.ts), which internally process one by one file uploading process at a time in loop and returns result once all file are uploaded. 
+![devices-mockup](https://raw.githubusercontent.com/cotes2020/jekyll-theme-chirpy/master/assets/img/sample/devices-mockup.png)
 
-Here is signature of method `SPMultiFileUpload({url :"baseReqUrl",files:[{fileName:"filename",data :Blobdata}]})`.
+## Table of Contents
 
-`SPMultiFileUpload` accepts baseRequestUrl like `https://tenant.sharepoint.com/_api/Lists/GetByTitle('SPOList')/items(4)/AttachmentFiles/` in which List and Listitem Id already is set,
-`files` accept array of files json object with `fileName` and `data` field.
+* [Installing](#installing)
+* [Usage](#usage)
+* [Contributing](#contributing)
+* [Credits](#credits)
+* [Support](#support)
+* [License](#license)
 
-To upload files we need to pass `data` field as `Blob` type or `ArrayBuffer` which are binary format.
 
-Let's see Below code snippet.
+## Installing
 
-```js
-import {SPMultiFileUpload} from "./SPOHelper";
+### Prerequisites
 
-var baseReqUrl ="https://tenant.sharepoint.com/_api/Lists/GetByTitle('SPOList')/items(4)/AttachmentFiles/";
-//Here for testing purpose I have generated blob type object for text file , but you can prepare this array of files using file upload control
+Follow the [Jekyll Docs](https://jekyllrb.com/docs/installation/) to complete the installtion of basic environment (Ruby, RubyGem, Bundler and Jekyll). In order to use the script tools to save time, we also need to install [Python](https://www.python.org/downloads/)(version 3.5 or abover) and [ruamel.yaml](https://pypi.org/project/ruamel.yaml/).
 
-var files =[
-{fileName: "1580650023814.txt", data: new Blob["Hello 1"]},
-{fileName: "2580650023814.txt", data: new Blob["Hello 2"]},
-{fileName: "3580650023814.txt", data: new Blob["Hello 3"]},
-{fileName: "4580650023814.txt", data: new Blob["Hello 4"]}
-];
+In addition, if your machine is running Debian or macOS, make sure you have the [GNU coreutils](https://www.gnu.org/software/coreutils/) installed. Otherwise, get it by:
 
-//Alternatively to test multiple file upload functionality you can use below method `GenerateSampleFileArray(10)` to prepare  files array by passing number of files count as argument.
-var files=GenerateSampleFileArray(4);
+* Debian
 
-//Pass required paramters and Call method to upload files.
-SPMultiFileUpload({url:baseReqUrl,files:files}).then(r=>console.log("All File Uploaded..",r));
-
-```
-Once all files are uploaded you will receive message in console log.
-
-## How to update created by and modified by field in sharepoint List using REST API
-## How to update Author and Editor field in sharepoint list using REST API
-
-If you are performing  Automated tasks using MS Flow or Power Automate and Background job for uploading file or inserting new list item to Sharepoint List using Service Credentials or Sharepoint App Only Token On Behalf of Some User then Author and Editor Field (  also known as Created By and Modified Field) are set as Service Crednetial  or Sharepoint App Name.
-
-In this type of scenario Way to update Author and Editor field in Sharepoint List and Document Library is very important functionality.
-
-Luckily, I have found way to Update Created By and Modified By Field in SharePoint List using REST API on Sharepoint Online.
-
-I have used SPOHelper utility to Perform Sharepoint POST request with wrapped Request Digest.
-Make Sure to pass correct Paylaod as per Below Sample Code snippet.
-
-```js
-import {SPPost} from "./SPOHelper";
-
-// Prepare request Url to update Author or Editor field in SharePoint Using REST API as bellow
-var rootUrl="https://tenant.sharepoint.com";
-var reqUrl=rootUrl+"/_api/web/Lists/GetbyTitle('SPOList')/items(2)/ValidateUpdateListItem()";
-
-// Prepare payload to update Author or Editor field in SharePoint Using REST API as bellow
-
-var payload={"formValues":[
-{"FieldName":"Editor"
-,"FieldValue":"[{'Key':'i:0#.f|membership|normal@tenant.onmicrosoft.com'}]"
-},
-{"FieldName":"Author"
-,"FieldValue":"[{'Key':'i:0#.f|membership|normal@tenant.onmicrosoft.com'}]"}]
-};
-
-SPPost({url:reqUrl,payload:payload}).then(r=>console.log(r));
-
-```
-As per above code once Request Executed you will see response in console as below. In Response `ErrorMessage` and `HasException` value indicate weather our request executed successfully or not.
-
-```
-{"value":[
-{"ErrorMessage":null, "FieldName":"Editor",
-"FieldValue":"[{'Key':'i:0#.f|membership|normal@tenant.onmicrosoft.com'}]"
-,"HasException":false,"ItemId":2}
-,{"ErrorMessage":null,"FieldName":"Author",
-"FieldValue":"[{'Key':'i:0#.f|membership|normal@tenant.onmicrosoft.com'}]"
-,"HasException":false,"ItemId":2}]}
+```console
+$ sudo apt-get install coreutils
 ```
 
-#### Hope, You find this article helpful for Updating Author and Editor Field in SharePoint  List.
+* macOS
 
-##  How to Add attachment or upload file to Sharepoint List or Document Library using REST API on SharePoint Online, 2016, 2019
-### Posted Date : "2020-01-26T08:48:00.909Z"
-
-If you are developing with Typescript first you need to import requried methods from [`SPOHelper.ts`](https://github.com/anomepani/sp-rest-util/blob/master/SPOHelper.ts)
-
-```js
-import {SPPost, SPFileUpload} from "./SPOHelper";
-```
-Using SPOhelper `SPPost` method, You can Upload only text file to Sharepoint List as per below code.
-We are passing Url and payload for text file as plain text value.
-
-```js
-var reqUrl="https://tenant.sharepoint.com/_api/Lists/GetByTitle('SPOList')/items(1)/AttachmentFiles/add(FileName='abc3.txt')";
-SPPost({
-url:reqUrl
-,payload:"This is text")
-}).then(r=>console.log(r))
-```
-As we know most of case we are uploading PPT, Excel, PDF and Word File which are not Plain Text File.
-To upload this types of files we need to pass payload as `Blob` type or `ArrayBuffer` which are binary format.
-I have created `SPFileUpload` wrapper method to upload file to sharepoint with minimal efforts.
-
-```js
-var reqUrl="https://tenant.sharepoint.com/_api/Lists/GetByTitle('SPOList')/items(1)/AttachmentFiles/add(FileName='abc3.txt')"
-SPFileUpload({
-url:reqUrl
-,payload:new Blob(["This is text"],{type:"text/plain"})
-}).then(r=>console.log(r))
-```
-As per above sample example you have to pass url where you have to upload file and in payload pass arraybuffer or blob type value of file.
-
-##  SPOHelper - Light Weight CRUD Operation REST Utility For SharePoint Online in SPFX Framework
-### Posted Date : "2020-01-12T08:48:00.909Z"
-On Daily basis if we have to make REST API Request in Sharepoint Online Most of developer will be using `fetch` or `$.ajax`.
-To use `$.ajax` it requires external depenedency `jQuery`, and `fetch` API Available in Modern Browsers and polyfill available as well.
-
-However even if we are making Sharepoint REST API (CRUD) Request using `fetch` or `$.ajax` every time we need to setup Headers, 
-Content Type, Credentials  and RequestDigest Headers and json data conversion for response.
-
-To Remove this type of duplicate configuration and repetetive boilerplate code,  I have created [`SPOHelper.ts`](https://github.com/anomepani/sp-rest-util/blob/master/SPOHelper.ts) for faster SPFX Development.
-
-### How to Perform Sharepoint List | Library | all crud operations using REST API on Sharepoint Online, Sharepoint 2016, Sharepoint 2019.
-
-If you are developing with Typescript first you need to import requried methods 
-
-```js
-import {SPGet, SPDelete, SPPost, SPUpdate} from "./SPOHelper";
-```
-
-`SPGet` and `SPDelete` method accepts single parameter `url`
-
-`SPPost(options)`, `SPUpdate(options)` method accepts single JSON object as parameter which have multiple json property.
-`options.url` which is url required
-`options.payload` is json object which have all required data for inserting `List` or `ListItem` without `metadata`.
-
-In this `SPOHelper.ts` I have used `Accept` and `Content-Type` headers value `"application/json; odata=nometadata"` which doesn't 
-require metadata while CRUD Operation and response payload is also minimal. You can explore [json-light-support-rest-sharepoint-api](https://www.microsoft.com/en-us/microsoft-365/blog/2014/08/13/json-light-support-rest-sharepoint-api-released/)
-
-`SPPost(options)` This method used for Createing `List` or `List Item in SharePoint Online.
-`SPUpdate(options)` This method used for Updating `List` or `List Item in SharePoint Online.
-
-#### Sharepoint Online GET REST API Request Usage Example using SPOHelper SPGet method | Sharepoint crud operations
-
-```js
-//Get List By Title
-SPGet("https://tenant.sharepoint.com/sites/ABCSite/_api/Lists/getbytitle('SPO List')")
-.then(r=>console.log(r));
-
-//Get All ListItem
-SPGet("https://tenant.sharepoint.com/sites/ABCSite/_api/Lists/getbytitle('SPO List')/items")
-.then(r=>console.log(r));
-```
-
-#### Sharepoint Online DELETE REST API Request Usage Example using SPOHelper SPDelete method | Sharepoint crud operations
-
-```js
-//Delete Sharepoint List 
-SPDelete("https://tenant.sharepoint.com/sites/ABCSite/_api/Lists/getbytitle('SPO List')")
-.then(r=>console.log(r));
-
-//Delete Sharepoint Listitem
-SPDelete("https://tenant.sharepoint.com/sites/ABCSite/_api/Lists/getbytitle('SPO List')/items(1)")
-.then(r=>console.log(r));
-```
-
-#### Sharepoint Online POST REST API Request Usage Example using SPOHelper SPPost method | Sharepoint crud operations
-
-```js
- //Create SharePoint List without passing metadata
- SPPost({url:"https://tenant.sharepoint.com/sites/ABCSite/_api/Lists"
- ,payload:{Title :"POC Doc"
- , BaseTemplate: 101
- ,Description: 'Created From SPOHelper' }
- })
- .then(r=>console.log(r));
- 
- //Create SharePoint ListItem without passing metadata
- SPPost({url:"https://tenant.sharepoint.com/sites/ABCSite/_api/Lists/getbytitle('SPO List')/items"
- ,payload:{Title :"POST test",
- Number:123}
- })
- .then(r=>console.log(r));
- 
-```
-
-#### Sharepoint Online UPDAte REST API Request Usage Example using SPOHelper SPUpdate method | Sharepoint crud operations
-
-```js
- //Update SharePoint List without passing metadata
- SPUpdate({url:"https://tenant.sharepoint.com/sites/ABCSite/_api/Lists/GetByTitle('POC Doc')"
- ,payload:{Description: 'Updated Description From SPOHelper' }
- }).then(r=>console.log(r));
- 
- //Update SharePoint ListItem without passing metadata
- SPUpdate({url:"https://tenant.sharepoint.com/sites/ABCSite/_api/Lists/getbytitle('SPO List')/items(1)"
- ,payload:{Title :"Uodate  test",
- Number:1234}
- }).then(r=>console.log(r))
- 
-```
-##### Fill free to create [isssue](https://github.com/anomepani/sp-rest-util/issues) and reach out to me at [arvindmepani@gmail.com](mailto:arvindmepani@gmail.com)
-
-## Sharepoint 2013, 2016, 2019, Online, List, ListItem CRUD Operation Example code Using REST API
-
-### Note- Suggesting to use `SPOHelper` utils for CRUD Operaton using Sharepoint  REST instead of `SPRest`
-
-```js
-var util=new SPRest("https://brgrp.sharepoint.com");
-
-// Get All Item from List item  
-util.Utils.ListItem.GetAllItem({listName:"PlaceHolderList"}).then(function(r){  
-console.log(r);  
-// Response received. TODO bind record to table or somewhere else.  
-});
-
-//Get all selected column Data using full URL  
-var reqUItemUrl="https://brgrp.sharepoint.com/_api/web/lists/getbytitle('PlaceHolderList')/items";
-util.Utils.ListItem  
-.GetAllItem({  
-   url:reqUItemUrl+"?$select=Id,Title&$top=200"  
-}).then(function(r){console.log(r);  
-//Response Received  
-});  
-  
-//Get all selected column data with listName and oDataOption  
-  
-util.Utils.ListItem.GetAllItem(  
-   {"listName":"PlaceHolderList"  
-      ,oDataOption:"$select=Id,Title&$top=200"  
-   }).then(function(r){console.log(r);  
-   //Response Received  
-});  
-
-// Get List Item By Id  
-util.Utils.ListItem.GetItemById({listName:"PlaceHolderList",Id:201}).then(function(r){    
-console.log(r);    
-// Response received.   
-});
-
-// Add ListItem to Sharepoint List  
-util.Utils.ListItem.Add({listName:"PlaceHolderList"
-,data:{Title:"New Item Created For Demo",UserId:1,Completed:"true"}}).then(function(r){    
-console.log(r);    
-// Added New List item response received with newly created item  
-}); 
-
-// Update List item based on ID with new data in SharePoint List  
-util.Utils.ListItem.Update({listName:"PlaceHolderList",Id:201
-,data:{Title:"Updated List Item",UserId:1,Completed:"true"}}).then(function(r){    
-// List Item Updated and received response with status 204  
-console.log(r);  
-}); 
-
-// Delete List item based on ID  
-util.Utils.ListItem.Delete({listName:"PlaceHolderList",Id:201}).then(function(r){    
-// List Item Deleted and received response with status 200  
-console.log(r);  
-}); 
-```
-
-Reference link : https://www.c-sharpcorner.com/article/easy-sharepoint-listitem-crud-operation-using-rest-api-wrapper/
-
-## Get or Generate RequestDigest in SharePoint 2013, 2016, 2019 , Online using REST API
-
-```js
-var getRequestDigest=(rootUrl)=>{
-var _payloadOptions = {  method: "POST", 
-                headers: {  credentials: "include",  Accept: "application/json; odata=verbose"
-                ,"Content-Type": "application/json; odata=verbose" }  
-            };  
-  
-//RequestDigest Request
-return fetch(rootUrl+"/_api/contextinfo",_payloadOptions).then(r=>r.json())
-}
+```console
+$ brew install coreutils
 ```
 
 
+### Jekyll Plugins
 
-## Upload file or Attachment to in SharePoint 2013, 2016,2019 Online Custom List or Document Library Using REST API
+[Fork **Chirpy** from GitHub](https://github.com/cotes2020/jekyll-theme-chirpy/fork), then clone your forked repo to local:
 
-```js
-//Get Digest first then create txt file
-getRequestDigest("https://brgrp.sharepoint.com").then (r=>{
-//Received Request Digest
-var reqUrl="https://brgrp.sharepoint.com/_api/web/GetFolderByServerRelativeUrl('/Shared Documents')"
-fetch(reqUrl+"/Files/add(url='file_name.txt',overwrite=true)",
-{method:"POST",headers:
-{accept:"application/json;odata=verbose",
-"Content-Type":"application/json;odata=verbose","X-RequestDigest":r.d.GetContextWebInformation.FormDigestValue }
-,body:"Content Of Text File"}).then(r=>console.log(r))
-})
-```
-## Read file or attachment from SharePoint Document Library Using REST API | Sharepoint Onine, 2013, 2016, 2019
-
-In this example I have tried to Read Excel File from SharePoint Online document library using REST API
-
-```js
- 
-        fetch("https://brgrp.sharepoint.com/sites/WMAMaster/_api/Web/GetFileByServerRelativePath(decodedurl='/sites/WMAMaster/Shared Documents/Book.xlsx')/$value", {
-            headers: {
-                "accept": "application/json;odata=verbose"
-            }
-        }).then(r => r.blob()).then(r => 
-{
-console.log("BLOB RESULT");
-console.log(r);
-            //Commented Converting  Of Blob to array buffer
-            new Response(r).arrayBuffer().then(r=>{
-console.log("ARRAY BUFFER RESULT");
-console.log(r);
-});
-        });
+```console
+$ git clone git@github.com:USER/jekyll-theme-chirpy.git
 ```
 
-## Copy file or attachement from SharePoint List | Document Library Using REST API | SharePoint Online, 2013, 2016, 2019 
+replace the `USER` above to your GitHub username.
 
-In This example I have tried to read excel file from one of the sharepoint online document library and create copy of excel file in library
+The first time you run or build the project on your machine, perform the installation of Jekyll plugins. Go to the root of repo and run:
 
-```js
-
-//Generate Request Digest for Creating excel file in SharePoint Online Document Library
-fetch("https://brgrp.sharepoint.com/sites/WMAMaster/_api/contextinfo", {
-        method: "POST",
-        headers: {
-            "accept": "application/json;odata=verbose",
-            "content-type": "application/json;odata=verbose",
-
-        }
-    }).then(r => r.json())
-    .then(rd => {
-
-        //Read Excel File from SharePoint
-        fetch("https://brgrp.sharepoint.com/sites/WMAMaster/_api/Web/GetFileByServerRelativePath(decodedurl='/sites/WMAMaster/Shared Documents/Book.xlsx')/$value", {
-            headers: {
-                "accept": "application/json;odata=verbose"
-            }
-        }).then(r => r.blob()).then(r => {
-            //Commented Converting  Of Blob to array buffer
-            //new Response(r).arrayBuffer().then(r=>{
-            //here "rd" is response from RequestDigest Request
-            //here "r" is response from Reading Excel file from SharePoint in ArrayBuffer
-            // Copy Excel file from SharePoint and Save it to Library
-
-            fetch("https://brgrp.sharepoint.com/sites/WMAMaster/_api/web/GetFolderByServerRelativeUrl('/sites/WMAMaster/Shared Documents')/Files/add(url='copyexcel.xlsx',overwrite=true)", {
-                method: "POST",
-                headers: {
-                    accept: "application/json;odata=verbose",
-                    "Content-Type": "application/json;odata=verbose",
-                    "X-RequestDigest": rd.d.GetContextWebInformation.FormDigestValue
-                },
-                body: r
-            }).then(r => console.log(r));
-            //Commented Converting  Of Blob to array buffer
-            //});
-
-        });
-    });
-```
-## Using SystemUpdate, Update SharePoint List Item Without Increasing Its Item File Version Using SharePoint REST API | SharePoint Online, 2013, 2016, 2019
-
-
-```js
-//payload for request   
- body=  {"formValues":[{"FieldName":"Title","FieldValue":"Single Update Title with versioning__"}]
- ,bNewDocumentUpdate:true}  
-  
- //Header data for sharepoint POST Request  
- var _payloadOptions = {  
-                method: "POST",  
-                body: undefined,  
-                headers: {  
-                    credentials: "include",  
-                    Accept: "application/json; odata=verbose",  
-                    "Content-Type": "application/json; odata=verbose"  
-                }  
-            };  
-  
-//Get RequestDigest First  
-fetch("https://brgrp.sharepoint.com/_api/contextinfo",_payloadOptions).then(r=>r.json())  
-.then(r=>  
-                                   {  
-_payloadOptions.headers["X-RequestDigest"]=r.d.GetContextWebInformation.FormDigestValue  
-      
-_payloadOptions.body=JSON.stringify(body);  
-  
-// Make REST API Call to update list item without increamenting version.  
-fetch("https://brgrp.sharepoint.com/_api/web/Lists/GetbyTitle('Documents')/items(1)/ValidateUpdateListItem()",
-_payloadOptions).then(r=>r.json()).then(r=>console.log(r))  
-});
-
+```terminal
+$ bundle install
 ```
 
-Reference link : 
-https://www.c-sharpcorner.com/article/update-a-sharepoint-list-item-without-increasing-its-item-file-version-using-res/
-
-## SharePoint Online, 2016, 2019 Batch Request REST API example using Batch Utils with 100 request in Single Batch call
-BatchUtils can be found in [Here](https://github.com/anomepani/sp-rest-util/blob/master/BatchUtils.ts)
-
-Here rootUrl required to Generate Request Digest Token as batch Request is POST request.
-
-```js
-var arr=["https://brgrp.sharepoint.com/_api/Lists/Getbytitle('PlaceHolderList')/items(212)"
-, "https://brgrp.sharepoint.com/_api/Lists/Getbytitle('PlaceHolderList')/items(213)"
-, "https://brgrp.sharepoint.com/_api/Lists/Getbytitle('PlaceHolderList')/items(214)"];
-
-BatchUtils.GetBatchAll({rootUrl:"https://brgrp.sharepoint.com",
-batchUrls:arr}).then(r=>console.log(r))
-
-```
-You can skip rootUrl if you have already generated request digest as below.
-
-```js
-var arr=["https://brgrp.sharepoint.com/_api/Lists/Getbytitle('PlaceHolderList')/items(212)"
-, "https://brgrp.sharepoint.com/_api/Lists/Getbytitle('PlaceHolderList')/items(213)"
-, "https://brgrp.sharepoint.com/_api/Lists/Getbytitle('PlaceHolderList')/items(214)"];
-
-getRequestDigest("https://brgrp.sharepoint.com").then(r=>{
-
-BatchUtils.GetBatchAll({rootUrl:"https://brgrp.sharepoint.com",
-batchUrls:arr,FormDigestValue: r.d.GetContextWebInformation.FormDigestValue}).then(r=>console.log(r))
-});
-
-```
-
-##  SharePoint Online, 2016, 2019 Batch REST API example using Batch Utils with Multiple Http POST, PATCH, DELETE Request in Single Batch Call
-
-SharePoint Batch API is very powerful and useful for making multiple request to single request.
-This BatchUtils Support ADD/UPDATE/DELETE Operation, it can be combined in single batch Requests.
-```js
-
-// Prepare collection of request with requestUrl and payload data.
-var arr=[{
-reqUrl:"https://brgrp.sharepoint.com/_api/Lists/Getbytitle('PlaceHolderList')/items(212)"
-,action:"UPDATE",
-data:{__metadata:{type:"SP.Data.PlaceHolderListListItem"},Title:"Update Article_1"}},
-{
-reqUrl:"https://brgrp.sharepoint.com/_api/Lists/Getbytitle('PlaceHolderList')/items(213)"
-,action:"UPDATE",
-data:{__metadata:{type:"SP.Data.PlaceHolderListListItem"},Title:"Update Article_2"}},
-{
-reqUrl:"https://brgrp.sharepoint.com/_api/Lists/Getbytitle('PlaceHolderList')/items(214)"
-,action:"UPDATE",
-data:{__metadata:{type:"SP.Data.PlaceHolderListListItem"},Title:"Update Article_3"}},
-{
-reqUrl:"https://brgrp.sharepoint.com/_api/Lists/Getbytitle('PlaceHolderList')/items"
-,action:"ADD",
-data:{__metadata:{type:"SP.Data.PlaceHolderListListItem"},Title:"Add Article_1"}}
-,{
-reqUrl:"https://brgrp.sharepoint.com/_api/Lists/Getbytitle('PlaceHolderList')/items(215)"
-,action:"DELETE"}];
-
-getRequestDigest().then(r=>{
-
-BatchUtils.PostBatchAll({rootUrl:"https://brgrp.sharepoint.com",
-batchUrls:arr,FormDigestValue: r.d.GetContextWebInformation.FormDigestValue}).then(r=>console.log(r))
-})
+`bundle` will automatically install all the dependent Jekyll Plugins that listed in the `Gemfile`.
 
 
+## Usage
+
+
+### Directory Structure
+
+The main files and related brief introductions are listed below.
+
+```sh
+jekyll-theme-chirpy/
+├── _data
+├── _includes      
+├── _layouts
+├── _posts          # posts stay here
+├── _scripts
+├── .travis.yml     # remove it
+├── .github         # remove this, too
+├── assets      
+├── tabs
+│   └── about.md    # the ABOUT page
+├── .gitignore
+├── 404.html
+├── Gemfile
+├── LICENSE
+├── README.md
+├── _config.yml     # configuration file
+├── tools           # script tools
+├── docs
+├── feed.xml
+├── index.html
+├── robots.txt
+└── sitemap.xml
 ```
 
-## Create a Communication Site In SharePoint 2019, Online Using REST API
 
-### Previously, In On Premise version of SharePoint it will take a lots of time to create sites or site collection. But Nowadays, On SharePoint Online it is very easy to create sites.
+As mentioned above, some files or directories should be removed from your repo:
 
-In this example we will see sample code to create Communication Site in SharePoint Online using REST API.
-Endpoint Url: https://brgrp.sharepoint.com/_api/sitepages/communicationsite/create
+- .travis.yml
+- .github
 
-Method: POST
-Metadata: {"type":"SP.Publishing.CommunicationSiteCreationRequest"}
 
-```js
-//Payload for Creating Sites using REST API
-var body={
-    "request":{
-        "__metadata":{"type":"SP.Publishing.CommunicationSiteCreationRequest"},
-        "AllowFileSharingForGuestUsers":false,
-        "Classification":"IT",
-        "Description":"Here is my communication site",
-        // "SiteDesignId" - use either of the below 3 options
-        //"SiteDesignId":"f6cc5403-0d63-442e-96c0-285923709ffc",
-        //"SiteDesignId":null,
-        "SiteDesignId":"6142d2a0-63a5-4ba0-aede-d9fefca2c767",
-        "Title":"My Test Communication Site",
-        "Url":"https://brgrp.sharepoint.com/sites/testcommunicationsite",            
-        "lcid":1033
-    }
-};
+### Customization
 
-// Separate Request for getting RequestDigest for POST Request 
- 	fetch("https://brgrp.sharepoint.com/_api/contextinfo",{ method: "POST", headers:{
-        "accept":"application/json;odata=verbose",
-        "content-type":"application/json;odata=verbose",
-        
-    }}).then(r=>r.json())
-	.then(r=>
-									   {
+Basically, go to `_config.yml` and customize the variables as needed, some of them are typical options:
 
-fetch("https://brgrp.sharepoint.com/_api/sitepages/communicationsite/create",{
-    method: "POST",
-    body: JSON.stringify(body),
-    headers:{
-        "accept":"application/json;odata=verbose",
-        "content-type":"application/json;odata=verbose",
-        "X-RequestDigest": r.d.GetContextWebInformation.FormDigestValue
-    }}).then(r=>r.text()).then(r=>console.log(r))
-    }); 
+* Avatar
+    
+    `avatar` defines the source image location. The sample image is `/assets/img/sample/avatar.jpg`. It should be replaced by your own one. Notice that a huge image file will increase the load time of your site, so keep your avatar size as samll as possible(may be *<https://tinypng.com/>* will help).
 
+* TimeZone
+
+    To ensure that the posts' release date matches the city you live in, please modify the field `timezone` correctly. A list of all available values can be found on [TimezoneConverter](http://www.timezoneconverter.com/cgi-bin/findzone/findzone) or [Wikipedia](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
+
+
+###  Run Locally
+
+You may want to preview the site before publishing, so just run the script tool:
+
+```terminal
+$ bash tools/run.sh
 ```
 
-## Create a Modern Site In SharePoint Online,2019 Using REST API
+Open a modern brower and visit at <http://localhost:4000>.
 
-## As we have created Communication sites using REST API In SharePoint Online, We can create Modern Site In SharePoint Online using REST API.
+Few days later, you may find that the file modification(e.g. edits to a post) does not refresh in real time by using `run.sh`. Don't worry, the advanced option `-r` (or `--realtime`) will solve this problem, but it requires [**fswatch**](http://emcrisostomo.github.io/fswatch/) to be installed on your machine. Type `-h` for more information.
 
-To specify which type of site to create you use the WebTemplate attribute. Use one of the following templates to select which type of site to create:
+###  Deploying to GitHub Pages
 
-* Communication Site: SITEPAGEPUBLISHING#0
-* non-group associated Team Site: STS#3
+Before the deployment begins, ensure the `url` in file `_config.yml` has been set to `https://<username>.github.io`(or the custom domain, if you have. e.g. `https://yourdomain.com`). What's more, if you prefer to the [Project site](https://help.github.com/en/github/working-with-github-pages/about-github-pages#types-of-github-pages-sites), change `baseurl` of file `_config.yml` to your project name, starting with a slash. e.g. `/project`.
 
-Reference Link : https://docs.microsoft.com/en-us/sharepoint/dev/apis/site-creation-rest
+#### Option 1: Built by GitHub Pages
 
-Endpoint Url: https://brgrp.sharepoint.com/_api/SPSiteManager/Create
+By deploying the site in this way, you're allowed to push the source code directly to the remote.
 
-Method: POST
+> **Note**: If you want to use any third-party Jekyll plugins that not in [this list](https://pages.github.com/versions/), stop reading the current approach and go to [*Option 2: Build locally*](#option-2-build-locally).
 
-```js
-//Paylaod for Creating modern site using SPSiteManager REST API
-var body={
-   "request":{"Title":"Contoso",
- "Lcid":1033,"ShareByEmailEnabled":false
- ,"Url":"https://brgrp.sharepoint.com/sites/mdrnsite"
- ,"Classification":""
- ,"Description":""
- ,"WebTemplate":"SITEPAGEPUBLISHING#0"
- ,"WebTemplateExtensionId":"00000000-0000-0000-0000-000000000000"
- ,"HubSiteId":"00000000-0000-0000-0000-000000000000"
- ,"Owner":null}};
- 
- 	fetch("https://brgrp.sharepoint.com/_api/contextinfo",{ method: "POST", headers:{
-        "accept":"application/json;odata=verbose",
-        "content-type":"application/json;odata=verbose",
-        
-    }}).then(r=>r.json())
-	.then(r=>
-									   {
-// Create Modern Site using REST API without passing metadata
-fetch("https://brgrp.sharepoint.com/_api/SPSiteManager/Create",{
-    method: "POST",
-    body: JSON.stringify(body),
-    headers:{
-        "accept":"application/json;odata=verbose",
-        "content-type":"application/json;odata=verbose",
-        "X-RequestDigest": r.d.GetContextWebInformation.FormDigestValue
-    }}).then(r=>r.text()).then(r=>console.log(r))
-    }); 
- ```
+**1**. Rename the repository to:
 
-### Changelog
-Year 2019 - Created SharePoint Online REST and Batch Utility to reduce daily basis repetetive code and hosted website using GitHub Pages
+|Site Type | Repo's Name|
+|:---|:---|
+|User or Organization | `<username>.github.io`|
+|Project| any one except `<username>.github.io`, let's say `project`|
 
-12-Jan-2020 - Created general purpose another SPO Helper Utility library to make GET, POST, UPDATE and DELETE Operation in Sharepoint Online REST API Easily.
+**2**. Commit the changes of the repo first, then run the initialization script:
 
-26-Jan-2020 - Updated heading and content, Fixed type mistake.
+```terminal
+$ bash tools/init.sh
+```
 
-02-Feb-2020 - Added Usage of `SPMultiFileUpload` method and updating Author and Editor field
+>**Note**: The *Recent Update* requires the posts' latest git-log date, so make sure the changes in `_posts` have been committed before running this command.
+
+it will automatically generates the *Latest Modified Date* and *Categories / Tags* page for the posts.
+
+**3**. Push the changes to `origin/master` then go to GitHub website and enable GitHub Pages service for the repo.
+
+**4**. Check it out:
+
+|Site Type | Site URL |
+|:---|:---|
+|User or Organization | `https://<username>.github.io/`|
+|Project| `https://<username>.github.io/project/`|
+
+
+#### Option 2: Build Locally
+
+For security reasons, GitHub Pages runs on `safe` mode, which means the third-party Jekyll plugins or custom scripts won't work. If you want to use any another plugins that not in the [whitelist](https://pages.github.com/versions/), **you have to generate the site locally rather than on GitHub Pages**.
+
+**1**. Browse to GitHub website, create a brand new repo named: 
+
+|Site Type | Repo's Name|
+|:---|:---|
+|User or Organization | `<username>.github.io`|
+|Project| any one except `<username>.github.io`, let's say `project`|
+
+and clone it.
+
+**2**. In the root of the source project, build your site by:
+
+```console
+$ bash tools/build.sh -d /path/to/local/project/
+```
+
+The generated static files will be placed in the root of `/path/to/local/project`. Commit and push the changes to the `master` branch on GitHub.
+
+**3**. Go to GitHub website and enable Pages service for the new repository.
+
+**4**. Visit at:
+
+|Site Type | Site URL |
+|:---|:---|
+|User or Organization | `https://<username>.github.io/`|
+|Project| `https://<username>.github.io/project/`|
+
+and enjoy!
+
+### Documentation
+
+For more details and the better reading experience, please check out the [tutorial in demo site](https://chirpy.cotes.info/categories/tutorial/). In the meanwhile, a copy of the tutorial is also available on the [Wiki](https://github.com/cotes2020/jekyll-theme-chirpy/wiki).
+
+## Contributing
+
+The old saying: "Tow heads are better than one. Five heads are better than two." So, welcome to report bugs, improve code quality or submit a new feature. For more information, see [contributing guidelines](.github/CONTRIBUTING.md).
+
+
+## Credits
+
+This theme is mainly built with [Jekyll](https://jekyllrb.com/) ecosystem, [Bootstrap](https://getbootstrap.com/), [Font Awesome](https://fontawesome.com/) and some other wonderful tools(their copyright information can be found in the relevant files).
+
+:tada:Thanks to all the volunteers who contributed to this project, their github ID is on [this list](https://github.com/cotes2020/jekyll-theme-chirpy/graphs/contributors). Also, I won't forget the guys who submitted the issues(or unmerged PR), they reported bugs, shared ideas or inspired me to write more readable documentation.
+
+
+## Support
+
+If you enjoy this theme or find it helpful, please consider becoming my sponsor, I'd really appreciate it! Click the button <kbd>:heart:Sponsor</kbd> at the top of the [Home Page](https://github.com/cotes2020/jekyll-theme-chirpy) and choose a link that suits you to donate. This will encourage me and help me maintain this project.
+
+
+## License
+
+This work is published under [MIT](https://github.com/cotes2020/jekyll-theme-chirpy/blob/master/LICENSE) License.
