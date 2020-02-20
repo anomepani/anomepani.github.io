@@ -5,7 +5,7 @@ date: 2020-01-26 8:10:00 +0530
 categories: [SharePoint, Tutorial]
 tags: [SharePoint Online, SharePoint 2019, ValidateUpdateListItem, REST API, SPOHelper]
 seo:
-  date_modified: 2020-02-16 18:53:26 +0530
+  date_modified: 2020-02-17 00:47:12 +0530
 ---
 
 ## How to update Author and Editor field in sharepoint list using REST API
