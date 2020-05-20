@@ -4,7 +4,7 @@ date: 2019-08-03 8:10:00 +0530
 categories: [SharePoint, Tutorial]
 tags: [SharePoint Online, SharePoint 2019, Batch API]
 seo:
-  date_modified: 2020-02-17 00:47:12 +0530
+  date_modified: 2020-02-21 01:55:41 +0530
 ---
 
 ## Usage Of BatchUtils's GetBatchAll

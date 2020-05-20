@@ -2,7 +2,9 @@
 title: Microsoft Global Power Platform BootCamp 2020 Session and Demo
 date: 2020-02-21 1:00:00 +0530
 categories: [Bootcamp]
-tags: [GPPB2020,Microsoft365]
+tags: [GPPB2020, Microsoft365]
+seo:
+  date_modified: 2020-02-21 01:55:41 +0530
 ---
 
 Here are Global Power Platform Bootcamp 2020 lists of demo and slide by community.
