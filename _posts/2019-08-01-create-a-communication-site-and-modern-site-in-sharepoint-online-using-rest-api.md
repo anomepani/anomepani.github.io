@@ -5,7 +5,7 @@ date: 2019-08-01 20:55:00 +0530
 categories: [SharePoint, Tutorial]
 tags: [SharePoint Online, REST API, SharePoint 2019]
 seo:
-  date_modified: 2020-02-17 00:47:12 +0530
+  date_modified: 2020-02-21 01:55:41 +0530
 ---
 
 ## Create Communication Site using REST API
