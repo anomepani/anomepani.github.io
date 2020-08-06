@@ -10,6 +10,8 @@ seo:
 
 ## Add attachment or upload file to Sharepoint List or Document Library using REST API easily using SPOHelper
 
+If you hearing `SPOHelper`, I suggest to explore [Previous Article](2020-01-12-spohelper-sharepoint-online-rest-api-crud-operation-utility-with-example.md) and [Video Tutorial](https://www.youtube.com/watch?v=29lhYBjQ-Ms)
+
 If you are developing with Typescript first you need to import requried methods from [`SPOHelper.ts`](https://github.com/anomepani/sp-rest-util/blob/master/SPOHelper.ts)
 
 ```js

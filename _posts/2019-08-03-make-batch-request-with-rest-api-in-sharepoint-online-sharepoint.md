@@ -15,6 +15,8 @@ SharePoint Batch API is very powerful and useful for making multiple request to 
 
 However, Create Request header and Payload for making successful Batch Request and Response Parsing is very tricky in SharePoint Online.
 
+You can also Checkout [BatchUtil Demo](https://www.youtube.com/watch?v=9TbjtS0mzlo) demonstrate Bulk inserts of 1000 items.
+
 However using [`BatchUtils`](https://github.com/anomepani/sp-rest-util/blob/master/BatchUtils.ts) it is very easy for sharepoint developer to make bacth request easily in Browser and In SPFX Development.
 
 As per code snippet Pass `rootUrl` and  `batchUrls` as array of request for GET Request.
