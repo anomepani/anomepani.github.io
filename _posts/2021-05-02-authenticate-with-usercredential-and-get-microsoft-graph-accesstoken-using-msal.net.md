@@ -25,7 +25,7 @@ I have used and tested functionality with Nuget package `Microsoft.Identity.Clie
 Created Separate `CommonCredentials.cs` file for common configuration and reusability.
 This Configuration must be read from App.config or Web.config, For Demo purpose I have written in code for simplicity.
 
-```cs  CommonCredentials.cs
+```cs
 using System;
 
 namespace Common
@@ -44,7 +44,7 @@ namespace Common
 
 We can implement TokenCache functionality for daemon application or background application in this file.
 
-```cs PublicAppUsingUsernamePassword.cs
+```cs
 using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
@@ -129,7 +129,7 @@ namespace MSALUtils
 
 ```
 
-```cs Program.cs
+```cs
 using Common;
 using Microsoft.Identity.Client;
 using System;
