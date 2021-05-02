@@ -1,7 +1,7 @@
 ---
 title: Authenticate with UserCredential and Get Microsoft Graph AccessToken Using MSAL.NET
 date: 2021-05-02 16:30:00 +0530
-categories: [MSAL.NET, Tutorial]
+categories: [Authentication, Tutorial]
 tags: [MicrosoftGraph,MSAL.NET]
 ---
 
